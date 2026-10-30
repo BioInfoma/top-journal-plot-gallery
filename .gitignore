@@ -1,0 +1,18 @@
+# R / Shiny standard gitignore
+.Rhistory
+.RData
+.Ruserdata
+.Rproj.user/
+*.Rproj.user
+Rplots.pdf
+*.Rout
+*.rds
+*.log
+
+# Deployment metadata (keep secrets local)
+rsconnect/
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+desktop.ini

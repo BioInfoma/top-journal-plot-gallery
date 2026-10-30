@@ -1,0 +1,101 @@
+id,tier,name,category,what_it_shows,typical_use,r_packages,dummy_dataset,build_difficulty,slug
+1,1,Scatter plot,Relationship,Shows relationship between two numeric variables,"Correlation, outliers, clusters",ggplot2,xy,easy,scatter_plot
+2,1,Line plot,Trend,Shows change of a variable over an ordered axis,"Time series, growth curves",ggplot2,ts,easy,line_plot
+3,1,Bar chart,Comparison,Compares values across categories,"Counts, means per group",ggplot2,grp,easy,bar_chart
+4,1,Grouped/stacked bar chart,Comparison,Compares subgroups within categories,Composition and subgroup comparison,ggplot2,grp,easy,grouped_stacked_bar_chart
+5,1,Histogram,Distribution,Bins one variable to show its distribution,"Check skew, modality",ggplot2,xy,easy,histogram
+6,1,Box plot,Distribution,"Median, quartiles and outliers per group",Compare groups robustly,ggplot2,grp,easy,box_plot
+7,1,Violin plot,Distribution,Box plot plus full density shape,Show multimodality across groups,ggplot2,grp,easy,violin_plot
+8,1,Strip/jitter plot,Distribution,Shows every raw data point,"Small samples, transparency",ggplot2,grp,easy,strip_jitter_plot
+9,1,Area chart,Trend,Filled line showing cumulative or stacked trends,"Cumulative cases, composition over time",ggplot2,ts,easy,area_chart
+10,1,Error bar plot,Comparison,Mean with SD/SEM/CI whiskers,Report uncertainty,ggplot2,grp,easy,error_bar_plot
+11,1,Pie/donut chart,Composition,Proportions of a whole,"Few categories, simple shares",ggplot2,grp,easy,pie_donut_chart
+12,1,Lollipop chart,Comparison,Cleaner alternative to bars,Ranked values,ggplot2,grp,easy,lollipop_chart
+13,1,Bubble chart,Relationship,Scatter with third variable as size,Three-variable comparison,ggplot2,xy,easy,bubble_chart
+14,1,Heatmap,Matrix,Matrix values as color,"Expression, correlations","ggplot2,pheatmap",mat,easy,heatmap
+15,1,Density plot (KDE),Distribution,Smoothed distribution estimate,Compare distributions by group,ggplot2,xy,easy,density_plot_kde
+16,1,Ridgeline plot,Distribution,Stacked offset density curves,Distribution shifts across many groups,ggridges,grp,easy,ridgeline_plot
+17,1,Q-Q plot,Diagnostics,Sample quantiles vs theoretical quantiles,Normality check,ggplot2,xy,easy,q_q_plot
+18,1,Bland-Altman plot,Diagnostics,Difference vs mean of two methods,Method agreement,"ggplot2,BlandAltmanLeh",clf,easy,bland_altman_plot
+19,1,Dose-response curve,Curve fit,Sigmoidal fit of response to dose,IC50/EC50 estimation,"drc,ggplot2",special,medium,dose_response_curve
+20,1,Kaplan-Meier curve,Survival,Survival probability over time with censoring,Time-to-event comparison,"survival,survminer",surv,easy,kaplan_meier_curve
+21,2,Volcano plot,Omics,Fold change vs significance,Differential expression,"ggplot2,ggrepel",de,easy,volcano_plot
+22,2,MA plot,Omics,Mean expression vs log fold change,"Normalization check, DE",ggplot2,de,easy,ma_plot
+23,2,Manhattan plot,Genomics,Genome-wide association p-values by position,GWAS hits,"qqman,ggplot2",gwas,easy,manhattan_plot
+24,2,GWAS Q-Q plot,Genomics,Observed vs expected -log10 p,Inflation check,"qqman,ggplot2",gwas,easy,gwas_q_q_plot
+25,2,PCA biplot,Dimension reduction,Samples and loadings on top PCs,"Variance structure, batch effects","FactoMineR,factoextra",mat,easy,pca_biplot
+26,2,t-SNE plot,Dimension reduction,Nonlinear 2D embedding,Cluster visualization,"Rtsne,ggplot2",mat,easy,t_sne_plot
+27,2,UMAP plot,Dimension reduction,Manifold embedding of high-dim data,Single-cell clusters,"uwot,ggplot2",mat,easy,umap_plot
+28,2,Clustered heatmap with dendrograms,Matrix,Heatmap with row/column clustering,Expression patterns,"pheatmap,ComplexHeatmap",mat,easy,clustered_heatmap_with_dendrograms
+29,2,ROC curve,Classification,TPR vs FPR across thresholds,Classifier performance,"pROC,ggplot2",clf,easy,roc_curve
+30,2,Precision-recall curve,Classification,Precision vs recall,Imbalanced data,"PRROC,ggplot2",clf,easy,precision_recall_curve
+31,2,Confusion matrix,Classification,Predicted vs actual class counts,Classification outcomes,"caret,ggplot2",clf,easy,confusion_matrix
+32,2,Correlation matrix (corrplot),Matrix,Pairwise correlation coefficients,Variable relationships,corrplot,mat,easy,correlation_matrix_corrplot
+33,2,Scree plot,Dimension reduction,Variance explained per component,Choose number of PCs,factoextra,mat,easy,scree_plot
+34,2,Forest plot,Meta-analysis,Effect sizes with CIs per study,"Meta-analysis, subgroup effects","forestplot,meta",meta,easy,forest_plot
+35,2,Funnel plot,Meta-analysis,Effect vs precision,Publication bias,"meta,metafor",meta,easy,funnel_plot
+36,2,ECDF plot,Distribution,Empirical cumulative distribution,Compare distributions without binning,ggplot2,xy,easy,ecdf_plot
+37,2,Raincloud plot,Distribution,"Half-violin, box and raw points",Full distribution transparency,"ggdist,ggrain",grp,medium,raincloud_plot
+38,2,Waterfall plot,Clinical,Ordered per-patient response bars,Tumor response,ggplot2,grp,easy,waterfall_plot
+39,2,Swimmer plot,Clinical,Per-patient timeline bars with events,"Treatment duration, events",ggplot2,special,medium,swimmer_plot
+40,2,Venn diagram,Sets,Overlaps of 2-4 sets,Shared genes/features,"ggvenn,VennDiagram",sets,easy,venn_diagram
+41,2,UpSet plot,Sets,Scalable set intersections,Many-set overlaps,"UpSetR,ComplexUpset",sets,easy,upset_plot
+42,2,Radar/spider chart,Multivariate,Multivariate profile on radial axes,Compare profiles,"fmsb,ggradar",grp,medium,radar_spider_chart
+43,2,GO/pathway enrichment dot plot,Omics,Enriched terms by size and significance,Functional enrichment,"clusterProfiler,ggplot2",de,easy,go_pathway_enrichment_dot_plot
+44,2,Sequence logo,Sequence,Letter heights by information content,Motif conservation,ggseqlogo,seq,easy,sequence_logo
+45,2,Rarefaction curve,Ecology,Diversity vs sampling depth,Sequencing depth adequacy,"vegan,iNEXT",abund,medium,rarefaction_curve
+46,3,Stacked relative-abundance barplot,Microbiome,Taxon composition per sample,Microbiome profiles,"ggplot2,phyloseq",abund,easy,stacked_relative_abundance_barplot
+47,3,Lollipop mutation plot,Genomics,Variants along protein domains,Mutation hotspots,"trackViewer,g3viz",special,medium,lollipop_mutation_plot
+48,3,Sankey/alluvial diagram,Flow,Flows between states or categories,"Patient flows, classification changes","ggalluvial,networkD3",flow,medium,sankey_alluvial_diagram
+49,3,Calibration plot,Classification,Predicted vs observed risk,Risk model validation,"rms,ggplot2",clf,easy,calibration_plot
+50,3,Phylogenetic tree (rectangular),Phylogenetics,Evolutionary relationships,Lineage relationships,"ggtree,ape",tree,easy,phylogenetic_tree_rectangular
+51,3,Circular tree with annotation rings,Phylogenetics,Circular tree with metadata rings,"Host, region, lineage annotation","ggtree,ggtreeExtra",tree,medium,circular_tree_with_annotation_rings
+52,3,Time-scaled MCC tree with HPD bars,Phylogenetics,Dated tree with node age uncertainty,BEAST output,"ggtree,treeio",tree,medium,time_scaled_mcc_tree_with_hpd_bars
+53,3,Bayesian skyline plot,Phylodynamics,Effective population size through time,Demographic history,ggplot2,ts,medium,bayesian_skyline_plot
+54,3,Tanglegram,Phylogenetics,Two trees linked by matching tips,"Host-parasite, gene-tree conflict","dendextend,phytools",tree,medium,tanglegram
+55,3,DensiTree,Phylogenetics,Overlaid posterior trees,Topological uncertainty,"phangorn,ape",tree,medium,densitree
+56,3,Phylogeographic arc map,Phylodynamics,Lineage movement between locations on a map,Spread of pathogens,"ggplot2,sf,rnaturalearth",special,medium,phylogeographic_arc_map
+57,3,Circos plot,Genomics,Circular genome tracks and links,"Structural variants, synteny",circlize,special,hard,circos_plot
+58,3,Chord diagram,Flow,Relationships between groups as arcs,"Migration, co-occurrence",circlize,flow,medium,chord_diagram
+59,3,Hi-C contact map,Genomics,Genome interaction frequency matrix,"3D genome, TADs","ggplot2,HiCExperiment",mat,medium,hi_c_contact_map
+60,3,Genome browser tracks,Genomics,Coverage and annotation tracks along a locus,ChIP/ATAC/RNA signal,"Gviz,ggplot2",special,medium,genome_browser_tracks
+61,3,Oncoplot,Genomics,Mutation matrix across a cohort,Cancer mutation landscape,"ComplexHeatmap,maftools",mat,medium,oncoplot
+62,3,Sashimi plot,Genomics,Splice junction read evidence,Alternative splicing,"ggsashimi,ggplot2",special,hard,sashimi_plot
+63,3,Pseudotime trajectory,Single-cell,Cell ordering along differentiation path,Lineage progression,"monocle3,slingshot",mat,medium,pseudotime_trajectory
+64,3,RNA velocity streamlines,Single-cell,Predicted future cell-state direction,Dynamics in single-cell data,"velocyto.R,scVelo",special,hard,rna_velocity_streamlines
+65,3,Network graph,Network,Nodes and edges,"Interactions, co-occurrence","igraph,ggraph",net,easy,network_graph
+66,3,Hive plot,Network,Axis-based network layout,Avoid hairballs,"HiveR,ggraph",net,medium,hive_plot
+67,3,LocusZoom plot,Genomics,Regional GWAS with LD and genes,Fine-mapping a locus,"locuszoomr,ggplot2",gwas,medium,locuszoom_plot
+68,3,Ternary plot,Composition,Three-component composition,"Soil, ancestry, mixtures",ggtern,grp,medium,ternary_plot
+69,3,Parallel coordinates plot,Multivariate,Each observation as a line across variables,Multi-dimensional comparison,GGally,mat,easy,parallel_coordinates_plot
+70,3,SHAP beeswarm plot,Machine learning,Feature impact per observation,Model interpretation,"shapviz,fastshap",special,medium,shap_beeswarm_plot
+71,3,Spatial transcriptomics map,Single-cell,Expression overlaid on tissue coordinates,Spatial gene patterns,"Seurat,ggplot2",special,medium,spatial_transcriptomics_map
+72,3,Choropleth map,Maps,Regions colored by value,Disease burden by region,"sf,ggplot2",special,medium,choropleth_map
+73,3,Treemap/sunburst,Composition,Hierarchical composition by area,Taxonomy abundance,"treemapify,plotly",abund,easy,treemap_sunburst
+74,3,PCoA/NMDS with ellipses,Ecology,Beta diversity ordination with group ellipses,Community comparison,"vegan,ggplot2",abund,medium,pcoa_nmds_with_ellipses
+75,3,Mutational signature plot,Genomics,96-channel SBS profile,Mutational processes,"MutationalPatterns,ggplot2",special,medium,mutational_signature_plot
+76,4,"Codon usage plots (ENC-GC3, neutrality, PR2)",Evolution,Forces shaping codon usage,Mutation vs selection pressure,ggplot2,special,medium,codon_usage_plots_enc_gc3_neutrality_pr2
+77,4,Ramachandran plot,Structure,Backbone phi/psi angles,Protein structure validation,"bio3d,ggplot2",special,medium,ramachandran_plot
+78,4,Protein surface electrostatics,Structure,Charge mapped on molecular surface,Binding sites,"r3dmol,PyMOL",special,hard,protein_surface_electrostatics
+79,4,Cryo-EM density map,Structure,3D density at near-atomic resolution,Structure determination,"r3dmol,rgl",special,hard,cryo_em_density_map
+80,4,Free-energy landscape,Structure,Energy surface over conformations,Molecular dynamics,"ggplot2,plotly",special,medium,free_energy_landscape
+81,4,Deep mutational scanning heatmap,Protein,Effect of each amino acid substitution,Variant effect mapping,ggplot2,mat,medium,deep_mutational_scanning_heatmap
+82,4,Fitness landscape,Evolution,Fitness surface over genotype space,Adaptive peaks,"plotly,rgl",special,medium,fitness_landscape
+83,4,Antigenic cartography,Virology,Antigenic distance map,Vaccine strain selection,"Racmacs,ggplot2",special,hard,antigenic_cartography
+84,4,Pangenome graph,Genomics,Variation graph across genomes,Structural diversity,"ggplot2,igraph",net,hard,pangenome_graph
+85,4,Waddington landscape,Single-cell,Epigenetic landscape of cell fate,Conceptual and quantitative fate,"plotly,rgl",special,medium,waddington_landscape
+86,4,Tree of life (fractal/OneZoom),Phylogenetics,Zoomable tree of all species,Massive phylogeny exploration,"ggtree,OneZoom",tree,hard,tree_of_life_fractal_onezoom
+87,4,Million-cell atlas embedding,Single-cell,Whole-organism embedding,Cell atlas,"Seurat,scattermore",mat,medium,million_cell_atlas_embedding
+88,4,Connectome/tractography,Neuroscience,Brain wiring in 3D,Neural connectivity,"rgl,brainGraph",net,hard,connectome_tractography
+89,4,Phase portrait/strange attractor,Dynamics,State-space trajectory of a dynamical system,"Lorenz, oscillators","deSolve,plotly",special,medium,phase_portrait_strange_attractor
+90,4,Persistent homology barcode,Topology,Birth/death of topological features,Topological data analysis,"TDA,ggplot2",special,medium,persistent_homology_barcode
+91,4,Loss landscape (3D),Machine learning,Loss surface around trained weights,Optimization geometry,"plotly,rgl",special,medium,loss_landscape_3d
+92,4,Attention/saliency map,Machine learning,Input regions driving model output,Deep model interpretation,"ggplot2,imager",special,medium,attention_saliency_map
+93,4,CMB power spectrum,Astronomy,Angular power spectrum of cosmic microwave background,Cosmology,ggplot2,special,easy,cmb_power_spectrum
+94,4,Hertzsprung-Russell diagram,Astronomy,Luminosity vs temperature,Stellar evolution,ggplot2,xy,easy,hertzsprung_russell_diagram
+95,4,Hubble diagram,Astronomy,Distance vs redshift,Expansion of universe,ggplot2,xy,easy,hubble_diagram
+96,4,Gravitational wave spectrogram,Physics,Time-frequency chirp,LIGO detection,"signal,ggplot2",special,medium,gravitational_wave_spectrogram
+97,4,Cosmic web simulation,Astronomy,Large-scale structure of universe,Cosmology simulations,"rgl,plotly",special,hard,cosmic_web_simulation
+98,4,Climate warming stripes,Climate,Annual temperature as colored bars,Science communication,ggplot2,ts,easy,climate_warming_stripes
+99,4,Keeling curve/hockey-stick plot,Climate,Long-term trend with seasonal cycle,Climate trends,ggplot2,ts,easy,keeling_curve_hockey_stick_plot
+100,4,Multi-panel composite figure,Composite,Panels A-H combining plot types,Journal-style figures,"patchwork,cowplot",special,medium,multi_panel_composite_figure
