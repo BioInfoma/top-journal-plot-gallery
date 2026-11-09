@@ -83,8 +83,8 @@ ui <- page_fluid(
     ),
     div(
       class = "d-flex align-items-center gap-2",
-      tags$span(class = "badge bg-primary text-white", style = "font-size: 0.85rem; padding: 6px 12px;", 
-                uiOutput("header_count_badge", inline = TRUE))
+      tags$span(class = "badge bg-primary text-white", style = "font-size: 0.85rem; padding: 6px 14px;", 
+                "100 Visualizations")
     )
   ),
   
@@ -92,7 +92,7 @@ ui <- page_fluid(
   div(
     class = "row g-4",
     
-    # Left Column: Streamlined Navigation & Filters (Width 4 on md+)
+    # Left Column: Streamlined Navigation & Filters
     div(
       class = "col-lg-4 col-md-5",
       div(
@@ -104,7 +104,7 @@ ui <- page_fluid(
         div(
           class = "mb-3",
           tags$label(class = "form-label text-muted small fw-bold", "SEARCH"),
-          textInput("q", NULL, placeholder = "🔍 Search plot name, keyword, or domain...")
+          textInput("q", NULL, placeholder = "Search by name, category, or keyword...")
         ),
         
         # 2. Filter Row: Tier & Category
@@ -117,24 +117,24 @@ ui <- page_fluid(
           ),
           div(
             class = "col-6",
-            tags$label(class = "form-label text-muted small fw-bold", "STATUS"),
-            selectInput("status_select", NULL, choices = c("Ready to View" = "ready", "All 100 Plots" = "all"))
+            tags$label(class = "form-label text-muted small fw-bold", "CATEGORY"),
+            selectInput("cat_select", NULL, choices = c("All Categories" = "all", sort(unique(cat_df$category))))
           )
         ),
         
         # 3. Main Plot Selector
         div(
           class = "mb-3",
-          tags$label(class = "form-label text-muted small fw-bold", "SELECT VISUALIZATION"),
+          tags$label(class = "form-label text-muted small fw-bold", "VISUALIZATION"),
           selectInput("plot_id", NULL, choices = NULL, width = "100%", selectize = TRUE)
         ),
         
         # 4. Quick Flip & Discovery Buttons
         div(
           class = "d-flex gap-2 mb-3",
-          actionButton("prev_btn", "❮ Previous", class = "btn btn-outline-secondary btn-nav flex-fill"),
-          actionButton("next_btn", "Next ❯", class = "btn btn-outline-secondary btn-nav flex-fill"),
-          actionButton("surprise_btn", "🎲 Random", class = "btn btn-outline-primary btn-nav flex-fill")
+          actionButton("prev_btn", "Previous", class = "btn btn-outline-secondary btn-nav flex-fill"),
+          actionButton("next_btn", "Next", class = "btn btn-outline-secondary btn-nav flex-fill"),
+          actionButton("surprise_btn", "Random", class = "btn btn-outline-primary btn-nav flex-fill")
         ),
         
         hr(style = "border-color: #E2E8F0; margin: 16px 0;"),
@@ -147,7 +147,7 @@ ui <- page_fluid(
       )
     ),
     
-    # Right Column: High-Visibility Plot Stage & Detailed Guide (Width 8 on md+)
+    # Right Column: High-Visibility Plot Stage & Detailed Guide
     div(
       class = "col-lg-8 col-md-7",
       
@@ -159,9 +159,9 @@ ui <- page_fluid(
         ),
         div(
           class = "d-flex gap-2",
-          downloadButton("dl_png", "📷 PNG (300 DPI)", class = "btn btn-sm btn-outline-dark"),
-          downloadButton("dl_pdf", "📄 Vector PDF", class = "btn btn-sm btn-outline-dark"),
-          downloadButton("dl_csv", "📊 Data CSV", class = "btn btn-sm btn-outline-dark")
+          downloadButton("dl_png", "PNG (300 DPI)", class = "btn btn-sm btn-outline-dark"),
+          downloadButton("dl_pdf", "Vector PDF", class = "btn btn-sm btn-outline-dark"),
+          downloadButton("dl_csv", "Data (CSV)", class = "btn btn-sm btn-outline-dark")
         )
       ),
       
@@ -180,21 +180,21 @@ ui <- page_fluid(
           
           # Tab A: Deep Scientific Guide
           tabPanel(
-            title = "💡 Scientific Guide",
+            title = "Scientific Guide",
             div(class = "mt-3", uiOutput("plot_guide_content"))
           ),
           
           # Tab B: Reproducible R Code
           tabPanel(
-            title = "💻 R Code",
+            title = "R Source Code",
             div(
               class = "mt-3",
               div(
                 class = "d-flex justify-content-between align-items-center mb-2",
-                tags$span(class = "text-muted small fw-bold", "SELF-CONTAINED REPRODUCIBLE SCRIPT"),
+                tags$span(class = "text-muted small fw-bold", "REPRODUCIBLE SOURCE SCRIPT"),
                 tags$button(
                   class = "btn btn-sm btn-primary",
-                  onclick = "navigator.clipboard.writeText(document.getElementById('code_block').innerText); this.innerText = 'Copied to Clipboard!'; setTimeout(() => this.innerText = 'Copy Code', 2000);",
+                  onclick = "navigator.clipboard.writeText(document.getElementById('code_block').innerText); this.innerText = 'Copied to Clipboard'; setTimeout(() => this.innerText = 'Copy Code', 2000);",
                   "Copy Code"
                 )
               ),
@@ -204,13 +204,13 @@ ui <- page_fluid(
           
           # Tab C: Sample Dummy Data
           tabPanel(
-            title = "📊 Sample Data Preview",
+            title = "Sample Data",
             div(
               class = "mt-3",
               div(
                 class = "d-flex justify-content-between align-items-center mb-2",
                 uiOutput("data_table_caption"),
-                downloadButton("dl_csv_tab", "Download Complete CSV", class = "btn btn-sm btn-outline-primary")
+                downloadButton("dl_csv_tab", "Download Full CSV", class = "btn btn-sm btn-outline-primary")
               ),
               div(style = "max-height: 420px; overflow-y: auto;", tableOutput("data_table_preview"))
             )
@@ -230,14 +230,13 @@ server <- function(input, output, session) {
   # Filtered catalog based on sidebar controls
   filtered_plots <- reactive({
     d <- cat_df
-    d$is_ready <- d$slug %in% available_slugs()
     
     if (input$tier_select != "all") {
       d <- d[as.character(d$tier) == input$tier_select, ]
     }
     
-    if (input$status_select == "ready") {
-      d <- d[d$is_ready, ]
+    if (input$cat_select != "all") {
+      d <- d[d$category == input$cat_select, ]
     }
     
     if (nzchar(input$q)) {
@@ -258,8 +257,7 @@ server <- function(input, output, session) {
     }
     
     labels <- paste0(
-      ifelse(d$is_ready, "● ", "○ "),
-      "#", d$id, " ", d$name,
+      d$id, ". ", d$name,
       " (", d$category, ")"
     )
     choices <- setNames(d$id, labels)
@@ -312,13 +310,6 @@ server <- function(input, output, session) {
     load_entry(r$slug)
   })
   
-  # Header Badge Output
-  output$header_count_badge <- renderUI({
-    d <- cat_df
-    built <- sum(d$slug %in% available_slugs())
-    paste0(built, " of ", nrow(d), " Plots Ready")
-  })
-  
   # Sidebar Info
   output$sidebar_info <- renderUI({
     d <- filtered_plots()
@@ -327,9 +318,9 @@ server <- function(input, output, session) {
       div(class = "d-flex justify-content-between mb-1", 
           span("Matching Plots:"), span(class = "fw-bold", nrow(d))),
       div(class = "d-flex justify-content-between mb-1", 
-          span("Ready in Selection:"), span(class = "fw-bold text-success", sum(d$is_ready))),
+          span("Active Category:"), span(class = "fw-bold", r$category %||% "-")),
       div(class = "d-flex justify-content-between", 
-          span("Current Category:"), span(class = "fw-bold", r$category %||% "-"))
+          span("Active Tier:"), span(class = "fw-bold", tier_labels[as.character(r$tier)] %||% "-"))
     )
   })
   
@@ -337,25 +328,16 @@ server <- function(input, output, session) {
   output$active_plot_title <- renderUI({
     r <- active_row()
     req(r)
-    e <- active_entry()
-    is_ready <- !is.null(e)
     
     t_num <- as.character(r$tier)
     t_label <- tier_labels[t_num]
     t_color <- tier_badge_bg[t_num]
     
-    status_tag <- if (is_ready) {
-      tags$span(class = "badge bg-success text-white", "✓ Ready to View")
-    } else {
-      tags$span(class = "badge bg-secondary text-white", "⏳ Scheduled in Roadmap")
-    }
-    
     tagList(
       div(
         class = "d-flex align-items-center gap-2 flex-wrap",
         tags$h3(style = "margin: 0; font-weight: 800; color: #0F172A; font-size: 1.45rem;", 
-                paste0("#", r$id, " ", r$name)),
-        status_tag
+                paste0(r$id, ". ", r$name))
       ),
       div(
         class = "d-flex align-items-center gap-2 mt-1 flex-wrap",
@@ -374,7 +356,7 @@ server <- function(input, output, session) {
     
     if (is.null(e)) {
       plot.new()
-      text(0.5, 0.55, paste0("Visualization #", r$id, " (", r$name, ")\nScheduled in Development Roadmap"), 
+      text(0.5, 0.55, paste0(r$name, "\nPlot script not loaded"), 
            cex = 1.3, font = 2, col = "#64748B")
       text(0.5, 0.42, paste0("Associated Dataset: data/", r$dummy_dataset, ".csv\nRequired Packages: ", r$r_packages), 
            cex = 1.0, col = "#94A3B8")
@@ -423,26 +405,26 @@ server <- function(input, output, session) {
       div(
         class = "col-md-6",
         div(
-          style = "background: #F8FAFC; border-radius: 8px; padding: 16px; border: 1px solid #E2E8F0; height: 100%;",
-          tags$h6(style = "font-weight: 700; color: #1E40AF;", "🔍 How to Read This Figure"),
-          tags$p(style = "color: #334155; line-height: 1.55; margin-bottom: 14px;", exp$how_to_read),
+          style = "background: #F8FAFC; border-radius: 8px; padding: 18px; border: 1px solid #E2E8F0; border-left: 3px solid #1E40AF; height: 100%;",
+          tags$h6(style = "font-weight: 700; color: #1E40AF; margin-bottom: 8px;", "How to Read This Figure"),
+          tags$p(style = "color: #334155; line-height: 1.6; margin-bottom: 16px; font-size: 0.95rem;", exp$how_to_read),
           
-          tags$h6(style = "font-weight: 700; color: #047857;", "🎯 When to Use in Research"),
-          tags$p(style = "color: #334155; line-height: 1.55; margin-bottom: 0;", exp$when_to_use)
+          tags$h6(style = "font-weight: 700; color: #047857; margin-bottom: 8px;", "When to Use in Research"),
+          tags$p(style = "color: #334155; line-height: 1.6; margin-bottom: 0; font-size: 0.95rem;", exp$when_to_use)
         )
       ),
       
       div(
         class = "col-md-6",
         div(
-          style = "background: #F8FAFC; border-radius: 8px; padding: 16px; border: 1px solid #E2E8F0; height: 100%;",
-          tags$h6(style = "font-weight: 700; color: #B91C1C;", "⚠️ Common Pitfalls & Traps"),
-          tags$p(style = "color: #334155; line-height: 1.55; margin-bottom: 14px;", exp$pitfalls),
+          style = "background: #F8FAFC; border-radius: 8px; padding: 18px; border: 1px solid #E2E8F0; border-left: 3px solid #DC2626; height: 100%;",
+          tags$h6(style = "font-weight: 700; color: #B91C1C; margin-bottom: 8px;", "Common Pitfalls & Traps"),
+          tags$p(style = "color: #334155; line-height: 1.6; margin-bottom: 16px; font-size: 0.95rem;", exp$pitfalls),
           
-          tags$h6(style = "font-weight: 700; color: #0F172A;", "🏛️ Top-Journal Literature Reference"),
-          tags$p(style = "color: #475569; font-size: 0.92rem; margin-bottom: 12px;", exp$journal_archetype %||% "Nature & Science standard reporting"),
+          tags$h6(style = "font-weight: 700; color: #0F172A; margin-bottom: 4px;", "Literature Archetype"),
+          tags$p(style = "color: #475569; font-size: 0.92rem; margin-bottom: 14px;", exp$journal_archetype %||% "Nature & Science standard reporting"),
           
-          tags$h6(style = "font-weight: 700; color: #0F172A; margin-bottom: 6px;", "📦 Recommended Packages"),
+          tags$h6(style = "font-weight: 700; color: #0F172A; margin-bottom: 6px;", "Recommended Packages"),
           div(class = "d-flex flex-wrap gap-1", pkg_badges)
         )
       )
@@ -457,11 +439,9 @@ server <- function(input, output, session) {
     if (file.exists(f)) {
       paste(readLines(f), collapse = "\n")
     } else {
-      paste0("# Script for Plot #", r$id, ": ", r$name, " (slug: ", r$slug, ")\n",
-             "# Scheduled in gallery development roadmap.\n",
+      paste0("# Script for: ", r$name, " (slug: ", r$slug, ")\n",
              "# Dataset: data/", r$dummy_dataset, ".csv\n",
-             "# Packages: ", r$r_packages, "\n\n",
-             "# Coming soon!")
+             "# Packages: ", r$r_packages, "\n")
     }
   })
   
